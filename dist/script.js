@@ -1,17 +1,7 @@
 "use strict";
+// const id = 25;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getJokes = exports.myName = exports.age = void 0;
-const id = 25;
-function age(age = id) {
-    return age;
-}
-exports.age = age;
-const name = "tree";
-function myName(myname = name) {
-    return `Hello my name is ${myname} and im ${age(id)}`;
-}
-exports.myName = myName;
-console.log(myName());
+exports.getJokes = void 0;
 function getJokes() {
     return fetch('https://icanhazdadjoke.com', {
         headers: {
@@ -26,3 +16,5 @@ function getJokes() {
         .catch(error => console.error('Error:', error));
 }
 exports.getJokes = getJokes;
+const button = document.getElementById("btn");
+const pe = document.getElementById("myp");

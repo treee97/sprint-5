@@ -1,16 +1,16 @@
-const id = 25;
+// const id = 25;
 
-export function age(age: number = id): number {
-    return age;
-}
+// export function age(age: number = id): number {
+//     return age;
+// }
 
-const name = "tree";
+// const name = "tree";
 
-export function myName(myname: string = name) : string{
-    return `Hello my name is ${myname} and im ${age(id)}`;
-}
+// export function myName(myname: string = name) : string{
+//     return `Hello my name is ${myname} and im ${age(id)}`;
+// }
 
-console.log(myName());
+// console.log(myName());
 
 interface jokeData {
 
@@ -31,3 +31,6 @@ export function getJokes(): Promise<string> {
     })
     .catch(error => console.error('Error:', error));
 }
+
+const button = document.getElementById("btn");
+const pe = document.getElementById("myp");
