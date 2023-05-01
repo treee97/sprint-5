@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+:root{
+    --poppins: 'Poppins', sans-serif; 
+}
+body{
+    background: #e9f7f7;
+}
+/* ============= WEATHER ========================= */
+
+.app__weather{
+    display: flex;
+    align-items:flex-start;
+    justify-content: flex-start;
+    height: 10%;
+}
+.app__weather-container{
+    padding: 2rem;
+}
+.app__weather-container p{
+    font-family: var(--poppins);
+    font-weight: 500;
+
+}
+/* =============== JOKE ======================= */
+.app__jokes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 80vh;
+    
+}
+.app__jokes-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    width: 50vw;
+    min-height: 50vh;
+    padding: 0 2rem;
+
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.50);
+    /* border: 1px solid red;     */
+}
+.app__jokes-container h1, .app__jokes-container p, .app__jokes-container button{
+    font-family: var(--poppins);
+    text-align: center;
+}
+.app__jokes-container > button{
+    padding: 1rem 2rem;
+    width: 150px;
+    border-radius: 10px;
+
+}
+.app__jokes-container button{
+    border: none;
+    color: #fff;
+    background-color: #95fde8;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.app__jokes-container button:hover{
+    background-color: #82ddcb;
+}
+
+.app__jokes-container_ratings{
+    display: none;
+    /* display: flex; */
+    align-items: center;
+   
+}
+.app__jokes-container_ratings-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.app__jokes-container_ratings-buttons button{
+    border-radius:50%;
+    padding: 10px 20px;
+    
+}
+.app__jokes-container_ratings-vote{
+    gap: 10px;
+    align-items: center;
+}
+.app__jokes-container_ratings-vote button {
+    border-radius: 10px;
+    padding: 10px 20px;
+
+}

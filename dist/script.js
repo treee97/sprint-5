@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.displayJokes = exports.getJokes = void 0;
+exports.getRatings = exports.displayJokes = exports.getJokes = void 0;
 //use the interface?
 function getJokes() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20,10 +20,7 @@ function getJokes() {
         })
             .then(response => response.json())
             .then(data => {
-            // console.log("all data", data);
-            // console.log("data.id", data.id);
             console.log("data.joke", data.joke);
-            // console.log("datastatus", data.status);
             return data.joke;
         });
     });
@@ -32,8 +29,40 @@ exports.getJokes = getJokes;
 function displayJokes() {
     return __awaiter(this, void 0, void 0, function* () {
         const jokeText = document.getElementById('jokeText');
+        const rating = document.getElementById("rating");
+        rating.style.display = 'flex';
         const joke = yield getJokes();
         jokeText.innerText = `"${joke}"`;
     });
 }
 exports.displayJokes = displayJokes;
+const reportJokes = [];
+function getRatings(score) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const joke = yield getJokes();
+        const date = new Date();
+        reportJokes.push({ joke: joke, score: score, date: date.toISOString() });
+        const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
+        const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
+        btnContainer.style.display = 'none';
+        voteContainer.style.display = 'flex';
+        const voteAgainBtn = voteContainer.querySelector('button');
+        voteAgainBtn.onclick = function () {
+            voteContainer.style.display = 'none';
+            btnContainer.style.display = 'flex';
+        };
+    });
+}
+exports.getRatings = getRatings;
+// generar array reportJokes
+// {
+//   joke: ...displayJokes,
+//   score: 1,
+//   date: ... (date toISOString());
+// }
+// -campos del 1 al 3 para puntuarlo 1<3
+// - botones no se muestran inicialmente.
+// - votacion opcional. Se puede pasar al siguiente chiste sin votar.
+// - una vez se vota, el usuario tiene la opcion de cambiar la votacion antes de pasar al siguiente joke.
+// - añadir toda la data al nuevo Array. 
+// - Enseñar el array por consola.
