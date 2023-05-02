@@ -21,7 +21,7 @@ function getJokes() {
             .then(response => response.json())
             .then(data => {
             console.log("data.joke", data.joke);
-            return data.joke;
+            return data;
         });
     });
 }

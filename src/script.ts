@@ -5,7 +5,7 @@ interface jokeData {
 }
 //use the interface?
 
-export async function getJokes(): Promise<string> {
+export async function getJokes(): Promise<jokeData[]> {
 
       return fetch('https://icanhazdadjoke.com/', {
         headers: {
@@ -16,7 +16,7 @@ export async function getJokes(): Promise<string> {
       .then(data => {
         console.log("data.joke", data.joke);
         
-        return data.joke
+        return data as jokeData[]
       })
   }
 
@@ -27,10 +27,13 @@ export async function displayJokes(): Promise<void> {
   
   const joke = await getJokes()
   jokeText.innerText = `"${joke}"`;
+  
 }
 
 
-const reportJokes = [];
+
+
+const reportJokes: any = [];
 
 export async function getRatings(score) {
 
