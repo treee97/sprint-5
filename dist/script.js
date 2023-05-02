@@ -9,10 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getJokes = void 0;
+exports.displayJokes = exports.getJokes = void 0;
 // https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
 // API USE
-// export const getJokes = async(): Promise<jokeData> => {
 function getJokes() {
     return __awaiter(this, void 0, void 0, function* () {
         return fetch('https://icanhazdadjoke.com/', {
@@ -22,26 +21,30 @@ function getJokes() {
         })
             .then(response => response.json())
             .then(data => {
-            console.log("getJokes data.joke", data.joke);
-            return data;
+            const jokeArray = [data];
+            console.log(jokeArray);
+            return jokeArray;
         });
     });
 }
 exports.getJokes = getJokes;
-// export async function displayJokes(): Promise<void> {
-//   const jokeText = document.getElementById('jokeText') as HTMLElement;
-//   const rating = document.getElementById("rating") as HTMLElement;
-//   rating.style.display = 'flex';
-//   getJokes()
-//     .then(jokeData => {
-//       jokeText.innerText = jokeData.map( data => data.joke).toString();
-//     });
-// }
-//   // jokeText.innerText = `"${joke}"`;
+function displayJokes() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const jokeText = document.getElementById('jokeText');
+        const rating = document.getElementById("rating");
+        rating.style.display = 'flex';
+        getJokes()
+            .then(jokeData => {
+            console.log("ths jokeData=>>>", jokeData);
+            jokeData.map(j => jokeText.innerText = j.joke);
+        });
+    });
+}
+exports.displayJokes = displayJokes;
+// for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
 const nextBtn = document.getElementById("btn");
-// const jokeText = document.getElementById('jokeText') as HTMLElement;
 nextBtn === null || nextBtn === void 0 ? void 0 : nextBtn.addEventListener('click', () => {
-    console.log("ts => ");
+    console.log("hello!");
 });
 const reportJokes = [];
 // export async function getRatings(score) {

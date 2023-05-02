@@ -6,7 +6,6 @@ interface jokeData {
 // https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
 // API USE
 
-// export const getJokes = async(): Promise<jokeData> => {
 export async function getJokes(): Promise<jokeData[]> {
 
       return fetch('https://icanhazdadjoke.com/', {
@@ -16,30 +15,31 @@ export async function getJokes(): Promise<jokeData[]> {
       })
       .then(response => response.json())
       .then(data => {
-        console.log("getJokes data.joke", data.joke);
 
-        return data as jokeData[]
+        const jokeArray: jokeData[] = [data as jokeData];
+        console.log(jokeArray);
+        
+        return jokeArray
       })
   }
 
-// export async function displayJokes(): Promise<void> {
-//   const jokeText = document.getElementById('jokeText') as HTMLElement;
-//   const rating = document.getElementById("rating") as HTMLElement;
-//   rating.style.display = 'flex';
+export async function displayJokes(): Promise<void> {
+  const jokeText = document.getElementById('jokeText') as HTMLElement;
+  const rating = document.getElementById("rating") as HTMLElement;
+  rating.style.display = 'flex';
   
-//   getJokes()
-//     .then(jokeData => {
-//       jokeText.innerText = jokeData.map( data => data.joke).toString();
-//     });
-// }
-//   // jokeText.innerText = `"${joke}"`;
+  getJokes()
+    .then(jokeData => {
+      console.log("ths jokeData=>>>",jokeData);
+      jokeData.map(j => jokeText.innerText = j.joke);
+     
+    });
+}
 
+// for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
 const nextBtn = document.getElementById("btn") as HTMLElement | null;
-
-// const jokeText = document.getElementById('jokeText') as HTMLElement;
-
   nextBtn?.addEventListener('click', () => {
-    console.log("ts => ");   
+    console.log("hello!");   
   }) 
 
 
