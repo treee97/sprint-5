@@ -3,8 +3,10 @@ interface jokeData {
     joke: string
     status: number
 }
-//use the interface?
+// https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
+// API USE
 
+// export const getJokes = async(): Promise<jokeData> => {
 export async function getJokes(): Promise<jokeData[]> {
 
       return fetch('https://icanhazdadjoke.com/', {
@@ -14,47 +16,60 @@ export async function getJokes(): Promise<jokeData[]> {
       })
       .then(response => response.json())
       .then(data => {
-        console.log("data.joke", data.joke);
-        
+        console.log("getJokes data.joke", data.joke);
+
         return data as jokeData[]
       })
   }
 
-export async function displayJokes(): Promise<void> {
-  const jokeText = document.getElementById('jokeText') as HTMLElement;
-  const rating = document.getElementById("rating") as HTMLElement;
-  rating.style.display = 'flex';
+// export async function displayJokes(): Promise<void> {
+//   const jokeText = document.getElementById('jokeText') as HTMLElement;
+//   const rating = document.getElementById("rating") as HTMLElement;
+//   rating.style.display = 'flex';
   
-  const joke = await getJokes()
-  jokeText.innerText = `"${joke}"`;
-  
-}
+//   getJokes()
+//     .then(jokeData => {
+//       jokeText.innerText = jokeData.map( data => data.joke).toString();
+//     });
+// }
+//   // jokeText.innerText = `"${joke}"`;
+
+const nextBtn = document.getElementById("btn") as HTMLElement | null;
+
+// const jokeText = document.getElementById('jokeText') as HTMLElement;
+
+  nextBtn?.addEventListener('click', () => {
+    console.log("ts => ");   
+  }) 
+
 
 
 
 
 const reportJokes: any = [];
 
-export async function getRatings(score) {
+// export async function getRatings(score) {
 
-  const joke = await getJokes();
-  const date = new Date();
+//   const joke = await getJokes();
+//   const date = new Date();
 
-  reportJokes.push({joke: joke, score: score, date: date.toISOString()})
+//   reportJokes.push({joke: joke, score: score, date: date.toISOString()})
 
-  const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
-  const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
+//   const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
+//   const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
 
-  btnContainer.style.display = 'none';
-  voteContainer.style.display = 'flex';
+//   btnContainer.style.display = 'none';
+//   voteContainer.style.display = 'flex';
 
-  const voteAgainBtn = voteContainer.querySelector('button');
-  voteAgainBtn.onclick = function() {
-    voteContainer.style.display = 'none';
-    btnContainer.style.display = 'flex';
-  }
+//   const voteAgainBtn = voteContainer.querySelector('button');
+//   voteAgainBtn.onclick = function() {
+//     voteContainer.style.display = 'none';
+//     btnContainer.style.display = 'flex';
+//   }
 
-}
+// }
+
+
 // generar array reportJokes
 // {
 //   joke: ...displayJokes,
