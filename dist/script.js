@@ -29,55 +29,67 @@ function getJokes() {
     });
 }
 exports.getJokes = getJokes;
-const reportJokes = [];
 function displayJokes() {
-    const jokeText = document.getElementById('jokeText');
-    const rating = document.getElementById("rating");
-    //rating = contenedor de los botones
-    rating.style.display = 'flex';
-    getJokes()
-        .then(jokeData => {
+    return __awaiter(this, void 0, void 0, function* () {
+        const reportJokes = [];
+        const jokeText = document.getElementById('jokeText');
+        const rating = document.getElementById("rating");
+        //rating = contenedor de los botones
+        rating.style.display = 'flex';
+        const jokeData = yield getJokes();
         const joke = jokeData[0].joke;
-        console.log(joke);
         jokeText.innerText = joke;
-        //agregamos el joke al innerText de jokeText;
-    });
-    const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
-    const voteBtn = document.getElementById("voteBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
-    const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
-    voteBtn.addEventListener('click', () => {
-        voteContainer.style.display = 'none';
-        btnContainer.style.display = 'flex';
-    });
-    nextBtn.addEventListener('click', () => {
-        voteContainer.style.display = 'none';
-        btnContainer.style.display = 'flex';
-    });
-    ratingBtn.forEach(btn => {
-        btn.addEventListener('click', (btn) => {
-            voteContainer.style.display = 'flex';
-            btnContainer.style.display = 'none';
-            const target = btn.target;
-            const date = new Date();
-            const score = parseInt(target.innerHTML);
-            getJokes()
-                .then(jokeData => {
-                const joke = jokeData[0].joke;
+        const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
+        const voteBtn = document.getElementById("voteBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
+        const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
+        voteBtn.addEventListener('click', () => {
+            voteContainer.style.display = 'none';
+            btnContainer.style.display = 'flex';
+        });
+        nextBtn.addEventListener('click', () => {
+            voteContainer.style.display = 'none';
+            btnContainer.style.display = 'flex';
+        });
+        let scoreSelected = false;
+        ratingBtn.forEach(btns => {
+            btns.addEventListener('click', (btn) => __awaiter(this, void 0, void 0, function* () {
+                voteContainer.style.display = 'flex';
+                btnContainer.style.display = 'none';
+                const target = btn.target;
+                const date = new Date();
+                const score = parseInt(target.innerHTML);
+                const itemExists = reportJokes.find(item => item.joke === jokeText.innerHTML);
+                if (itemExists) {
+                    itemExists.score = score;
+                }
+                else {
+                    const jokeObj = {
+                        joke: jokeText.innerHTML,
+                        score: score,
+                        date: date.toISOString()
+                    };
+                    reportJokes.push(jokeObj);
+                }
+                scoreSelected = true;
+                // console.log(reportJokes);
+                // (isNaN(score) ? 0 : score) no funciona xq estoy dentro de botones
+            }));
+        });
+        nextBtn.addEventListener('click', () => {
+            if (!scoreSelected) {
                 const jokeObj = {
-                    joke: joke,
-                    score: score,
-                    date: date.toISOString()
+                    joke: jokeText.innerHTML,
+                    score: 0,
+                    date: new Date().toISOString()
                 };
                 reportJokes.push(jokeObj);
-                console.log(reportJokes);
-            });
-            // reportJokes.push({joke: joke, score: score, date: date.toISOString()});
-            // console.log(reportJokes);
+            }
+            scoreSelected = false;
+            console.log(reportJokes);
         });
     });
-    console.log("reportJokes e => ", reportJokes);
 }
 exports.displayJokes = displayJokes;
 // for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
