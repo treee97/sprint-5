@@ -17,57 +17,67 @@ export async function getJokes(): Promise<jokeData[]> {
       .then(data => {
 
         const jokeArray: jokeData[] = [data as jokeData];
-        console.log(jokeArray);
+        // console.log(jokeArray);
         
         return jokeArray
       })
   }
 
+
+
 export async function displayJokes(): Promise<void> {
+  const reportJokes: any = [];
+
+
   const jokeText = document.getElementById('jokeText') as HTMLElement;
   const rating = document.getElementById("rating") as HTMLElement;
+  //rating = contenedor de los botones
   rating.style.display = 'flex';
   
-  getJokes()
+  const joke = getJokes()
     .then(jokeData => {
-      console.log("ths jokeData=>>>",jokeData);
-      jokeData.map(j => jokeText.innerText = j.joke);
-     
+      jokeData.map(j => {reportJokes.push({...j, joke: j.joke}); jokeText.innerText = j.joke});
+     //agregamos el joke al innerText de jokeText;
     });
+
+    const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
+    const voteBtn = document.getElementById("voteBtn") as HTMLElement;
+    const nextBtn = document.getElementById("nextBtn") as HTMLElement;
+
+    const voteContainer = document.querySelector('.app__jokes-container_ratings-vote') as HTMLElement;
+    const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons') as HTMLElement;
+    
+    voteBtn.addEventListener('click', () => {
+      voteContainer.style.display= 'none';
+      btnContainer.style.display = 'flex';
+    })
+
+    nextBtn.addEventListener('click', () => {
+      voteContainer.style.display= 'none';
+      btnContainer.style.display = 'flex';
+    })
+
+    ratingBtn.forEach(btn => {
+      btn.addEventListener('click', (btn) => {
+        voteContainer.style.display= 'flex';
+        btnContainer.style.display = 'none';
+        
+        const date = new Date();
+        
+        reportJokes.push({joke: joke, score: btn, date: date.toISOString()});
+
+      })
+    });
+
+    console.log("reportJokes e => ", reportJokes);
+    
 }
 
 // for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
-const nextBtn = document.getElementById("btn") as HTMLElement | null;
-  nextBtn?.addEventListener('click', () => {
-    console.log("hello!");   
-  }) 
-
-
-
-
-
-const reportJokes: any = [];
-
-// export async function getRatings(score) {
-
-//   const joke = await getJokes();
-//   const date = new Date();
-
-//   reportJokes.push({joke: joke, score: score, date: date.toISOString()})
-
-//   const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
-//   const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
-
-//   btnContainer.style.display = 'none';
-//   voteContainer.style.display = 'flex';
-
-//   const voteAgainBtn = voteContainer.querySelector('button');
-//   voteAgainBtn.onclick = function() {
-//     voteContainer.style.display = 'none';
-//     btnContainer.style.display = 'flex';
-//   }
-
-// }
+// const nextBtn = document.getElementById("btn") as HTMLElement | null;
+//   nextBtn?.addEventListener('click', () => {
+//     console.log("hello!");   
+//   }) 
 
 
 // generar array reportJokes
