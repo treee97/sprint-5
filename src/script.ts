@@ -2,6 +2,12 @@ interface jokeData {
     id: string
     joke: string
     status: number
+};
+
+interface ReportJoke {
+  joke: string
+  score: number
+  date: string
 }
 // https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
 // API USE
@@ -23,20 +29,21 @@ export async function getJokes(): Promise<jokeData[]> {
       })
   }
 
+const reportJokes: ReportJoke[] = [];
 
-
-export async function displayJokes(): Promise<void> {
-  const reportJokes: any = [];
-
+export function displayJokes(): void {
 
   const jokeText = document.getElementById('jokeText') as HTMLElement;
   const rating = document.getElementById("rating") as HTMLElement;
   //rating = contenedor de los botones
   rating.style.display = 'flex';
   
-  const joke = getJokes()
+  getJokes()
     .then(jokeData => {
-      jokeData.map(j => {reportJokes.push({...j, joke: j.joke}); jokeText.innerText = j.joke});
+     const joke = jokeData[0].joke;
+     console.log(joke);
+
+     jokeText.innerText = joke;
      //agregamos el joke al innerText de jokeText;
     });
 
@@ -61,10 +68,27 @@ export async function displayJokes(): Promise<void> {
       btn.addEventListener('click', (btn) => {
         voteContainer.style.display= 'flex';
         btnContainer.style.display = 'none';
-        
+        const target = btn.target as HTMLElement;
         const date = new Date();
+        const score = parseInt(target.innerHTML);
         
-        reportJokes.push({joke: joke, score: btn, date: date.toISOString()});
+        getJokes()
+        .then(jokeData => {
+         const joke = jokeData[0].joke;
+         const jokeObj: ReportJoke = {
+          joke: joke,
+          score: score,
+          date: date.toISOString()
+         }  
+
+         reportJokes.push(jokeObj);
+         console.log(reportJokes);
+         
+
+        });
+        // reportJokes.push({joke: joke, score: score, date: date.toISOString()});
+        // console.log(reportJokes);
+        
 
       })
     });

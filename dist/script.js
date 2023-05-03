@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.displayJokes = exports.getJokes = void 0;
+;
 // https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
 // API USE
 function getJokes() {
@@ -28,41 +29,55 @@ function getJokes() {
     });
 }
 exports.getJokes = getJokes;
+const reportJokes = [];
 function displayJokes() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const reportJokes = [];
-        const jokeText = document.getElementById('jokeText');
-        const rating = document.getElementById("rating");
-        //rating = contenedor de los botones
-        rating.style.display = 'flex';
-        const joke = getJokes()
-            .then(jokeData => {
-            jokeData.map(j => { reportJokes.push(Object.assign(Object.assign({}, j), { joke: j.joke })); jokeText.innerText = j.joke; });
-            //agregamos el joke al innerText de jokeText;
-        });
-        const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
-        const voteBtn = document.getElementById("voteBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
-        const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
-        voteBtn.addEventListener('click', () => {
-            voteContainer.style.display = 'none';
-            btnContainer.style.display = 'flex';
-        });
-        nextBtn.addEventListener('click', () => {
-            voteContainer.style.display = 'none';
-            btnContainer.style.display = 'flex';
-        });
-        ratingBtn.forEach(btn => {
-            btn.addEventListener('click', (btn) => {
-                voteContainer.style.display = 'flex';
-                btnContainer.style.display = 'none';
-                const date = new Date();
-                reportJokes.push({ joke: joke, score: btn, date: date.toISOString() });
-            });
-        });
-        console.log("reportJokes e => ", reportJokes);
+    const jokeText = document.getElementById('jokeText');
+    const rating = document.getElementById("rating");
+    //rating = contenedor de los botones
+    rating.style.display = 'flex';
+    getJokes()
+        .then(jokeData => {
+        const joke = jokeData[0].joke;
+        console.log(joke);
+        jokeText.innerText = joke;
+        //agregamos el joke al innerText de jokeText;
     });
+    const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
+    const voteBtn = document.getElementById("voteBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
+    const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
+    voteBtn.addEventListener('click', () => {
+        voteContainer.style.display = 'none';
+        btnContainer.style.display = 'flex';
+    });
+    nextBtn.addEventListener('click', () => {
+        voteContainer.style.display = 'none';
+        btnContainer.style.display = 'flex';
+    });
+    ratingBtn.forEach(btn => {
+        btn.addEventListener('click', (btn) => {
+            voteContainer.style.display = 'flex';
+            btnContainer.style.display = 'none';
+            const target = btn.target;
+            const date = new Date();
+            const score = parseInt(target.innerHTML);
+            getJokes()
+                .then(jokeData => {
+                const joke = jokeData[0].joke;
+                const jokeObj = {
+                    joke: joke,
+                    score: score,
+                    date: date.toISOString()
+                };
+                reportJokes.push(jokeObj);
+                console.log(reportJokes);
+            });
+            // reportJokes.push({joke: joke, score: score, date: date.toISOString()});
+            // console.log(reportJokes);
+        });
+    });
+    console.log("reportJokes e => ", reportJokes);
 }
 exports.displayJokes = displayJokes;
 // for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
