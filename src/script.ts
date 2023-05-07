@@ -21,11 +21,11 @@ date: string;
 
 
 type jokeType = 'dadJoke' | 'norrisJoke';
+//union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
 
 export async function getJokes(type: jokeType): Promise<string> {
 
     const url = type === 'dadJoke' ? 'https://icanhazdadjoke.com/' : 'https://api.chucknorris.io/jokes/random';
-    
     const res = await fetch(url, {
           headers: {
             'Accept': 'application/json',
@@ -33,8 +33,10 @@ export async function getJokes(type: jokeType): Promise<string> {
       })
 
     const data = await res.json();
-    let joke: string /* iniciar fuera del if */
-    
+
+    let joke: string 
+    // declaramos joke y le decimos que sea de tipo string de manera ⁡⁣⁣⁢𝗘𝗫𝗣𝗟𝗜𝗖𝗜𝗧𝗔
+
     if (type === 'dadJoke') {
       const dadJokeData = data as jokeData;
       joke = dadJokeData.joke;
@@ -45,14 +47,6 @@ export async function getJokes(type: jokeType): Promise<string> {
     console.log(joke);
     
     return joke;
-    // .then(response => response.json())
-    // .then(data => {
-
-    //   const jokeArray: jokeData[] = [data as jokeData];
-    //   // console.log(jokeArray);
-      
-    //   return jokeArray
-//     })
 }
 
 
@@ -112,12 +106,7 @@ export async function displayJokes(): Promise<void> {
               console.log(reportJokes);
 
             }
-
             scoreSelected = true;
-            // console.log(reportJokes);
-            // (isNaN(score) ? 0 : score) no funciona xq estoy dentro de botones
-
-
         });
     });
 
@@ -134,11 +123,3 @@ export async function displayJokes(): Promise<void> {
     })
 
   }
-  
-
-
-// for some reason this doesnt work in ts but it does work in a normal script like in the testing.js
-// const nextBtn = document.getElementById("btn") as HTMLElement | null;
-//   nextBtn?.addEventListener('click', () => {
-//     console.log("hello!");   
-//   }) 
