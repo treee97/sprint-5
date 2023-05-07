@@ -1,32 +1,58 @@
 interface jokeData {
-  id: string
-  joke: string
-  status: number
+  id: string;
+  joke: string;
+  status: number;
 };
 
+interface norrisData{
+  icon_url: string;
+  id: string;
+  url: string;
+  value: string;
+}
+
 interface ReportJoke {
-joke: string
-score: number
-date: string
+joke: string;
+score: number;
+date: string;
 }
 // https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
 // API USE
 
-export async function getJokes(): Promise<jokeData[]> {
 
-    return fetch('https://icanhazdadjoke.com/', {
-      headers: {
-        'Accept': 'application/json',
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
+type jokeType = 'dadJoke' | 'norrisJoke';
 
-      const jokeArray: jokeData[] = [data as jokeData];
-      // console.log(jokeArray);
+export async function getJokes(type: jokeType): Promise<string> {
+
+    const url = type === 'dadJoke' ? 'https://icanhazdadjoke.com/' : 'https://api.chucknorris.io/jokes/random';
+    
+    const res = await fetch(url, {
+          headers: {
+            'Accept': 'application/json',
+          }
+      })
+
+    const data = await res.json();
+    let joke: string /* iniciar fuera del if */
+    
+    if (type === 'dadJoke') {
+      const dadJokeData = data as jokeData;
+      joke = dadJokeData.joke;
+    } else {
+      const norrisJokeData = data as norrisData;
+      joke = norrisJokeData.value;
+    }
+    console.log(joke);
+    
+    return joke;
+    // .then(response => response.json())
+    // .then(data => {
+
+    //   const jokeArray: jokeData[] = [data as jokeData];
+    //   // console.log(jokeArray);
       
-      return jokeArray
-    })
+    //   return jokeArray
+//     })
 }
 
 
@@ -36,13 +62,11 @@ export async function displayJokes(): Promise<void> {
 
   const jokeText = document.getElementById('jokeText') as HTMLElement;
   const rating = document.getElementById("rating") as HTMLElement;
-  //rating = contenedor de los botones
   rating.style.display = 'flex';
   
-  const jokeData = await getJokes();
-    const joke = jokeData[0].joke;
-  
-    jokeText.innerText = joke;
+  const getRandomType = Math.random() < 0.5? 'dadJoke' : 'norrisJoke'; 
+  const jokeData = await getJokes(getRandomType);
+    jokeText.innerText = jokeData;
   
     const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
     const voteBtn = document.getElementById("voteBtn") as HTMLElement;
@@ -77,6 +101,7 @@ export async function displayJokes(): Promise<void> {
 
             if (itemExists) {
               itemExists.score = score;
+
             }else {
               const jokeObj: ReportJoke = {
                 joke: jokeText.innerHTML,
@@ -84,6 +109,8 @@ export async function displayJokes(): Promise<void> {
                 date: date.toISOString()
               }  
               reportJokes.push(jokeObj);
+              console.log(reportJokes);
+
             }
 
             scoreSelected = true;
@@ -104,7 +131,6 @@ export async function displayJokes(): Promise<void> {
         reportJokes.push(jokeObj);
       }
       scoreSelected = false;
-      console.log(reportJokes);
     })
 
   }
@@ -116,17 +142,3 @@ export async function displayJokes(): Promise<void> {
 //   nextBtn?.addEventListener('click', () => {
 //     console.log("hello!");   
 //   }) 
-
-
-// generar array reportJokes
-// {
-//   joke: ...displayJokes,
-//   score: 1,
-//   date: ... (date toISOString());
-// }
-// -campos del 1 al 3 para puntuarlo 1<3
-// - botones no se muestran inicialmente.
-// - votacion opcional. Se puede pasar al siguiente chiste sin votar.
-// - una vez se vota, el usuario tiene la opcion de cambiar la votacion antes de pasar al siguiente joke.
-// - añadir toda la data al nuevo Array. 
-// - Enseñar el array por consola.

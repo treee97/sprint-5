@@ -11,21 +11,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.displayJokes = exports.getJokes = void 0;
 ;
-// https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
-// API USE
-function getJokes() {
+function getJokes(type) {
     return __awaiter(this, void 0, void 0, function* () {
-        return fetch('https://icanhazdadjoke.com/', {
+        const url = type === 'dadJoke' ? 'https://icanhazdadjoke.com/' : 'https://api.chucknorris.io/jokes/random';
+        const res = yield fetch(url, {
             headers: {
                 'Accept': 'application/json',
             }
-        })
-            .then(response => response.json())
-            .then(data => {
-            const jokeArray = [data];
-            // console.log(jokeArray);
-            return jokeArray;
         });
+        const data = yield res.json();
+        let joke; /* iniciar fuera del if */
+        if (type === 'dadJoke') {
+            const dadJokeData = data;
+            joke = dadJokeData.joke;
+        }
+        else {
+            const norrisJokeData = data;
+            joke = norrisJokeData.value;
+        }
+        console.log(joke);
+        return joke;
+        // .then(response => response.json())
+        // .then(data => {
+        //   const jokeArray: jokeData[] = [data as jokeData];
+        //   // console.log(jokeArray);
+        //   return jokeArray
+        //     })
     });
 }
 exports.getJokes = getJokes;
@@ -34,11 +45,10 @@ function displayJokes() {
         const reportJokes = [];
         const jokeText = document.getElementById('jokeText');
         const rating = document.getElementById("rating");
-        //rating = contenedor de los botones
         rating.style.display = 'flex';
-        const jokeData = yield getJokes();
-        const joke = jokeData[0].joke;
-        jokeText.innerText = joke;
+        const getRandomType = Math.random() < 0.5 ? 'dadJoke' : 'norrisJoke';
+        const jokeData = yield getJokes(getRandomType);
+        jokeText.innerText = jokeData;
         const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
         const voteBtn = document.getElementById("voteBtn");
         const nextBtn = document.getElementById("nextBtn");
@@ -71,6 +81,7 @@ function displayJokes() {
                         date: date.toISOString()
                     };
                     reportJokes.push(jokeObj);
+                    console.log(reportJokes);
                 }
                 scoreSelected = true;
                 // console.log(reportJokes);
@@ -87,7 +98,6 @@ function displayJokes() {
                 reportJokes.push(jokeObj);
             }
             scoreSelected = false;
-            console.log(reportJokes);
         });
     });
 }
@@ -97,15 +107,3 @@ exports.displayJokes = displayJokes;
 //   nextBtn?.addEventListener('click', () => {
 //     console.log("hello!");   
 //   }) 
-// generar array reportJokes
-// {
-//   joke: ...displayJokes,
-//   score: 1,
-//   date: ... (date toISOString());
-// }
-// -campos del 1 al 3 para puntuarlo 1<3
-// - botones no se muestran inicialmente.
-// - votacion opcional. Se puede pasar al siguiente chiste sin votar.
-// - una vez se vota, el usuario tiene la opcion de cambiar la votacion antes de pasar al siguiente joke.
-// - añadir toda la data al nuevo Array. 
-// - Enseñar el array por consola.
