@@ -8,7 +8,7 @@
     --poppins: 'Poppins', sans-serif; 
 }
 body{
-    background: #e9f7f7;
+    background: #e5a6ec;
 }
 /* ============= WEATHER ========================= */
 
@@ -41,7 +41,6 @@ body{
 }
 .app__jokes-container{
     display: flex;
-    background: url();
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
@@ -58,12 +57,15 @@ body{
     letter-spacing: 6px;
     color: #ffcce1;
 }
+
 .app__jokes-container h1, .app__jokes-container p, .app__jokes-container button{
     font-family: var(--poppins);
+    font-weight: 500;
+
     text-align: center;
     color: #ffcce1;
 }
-.app__jokes-container > button{
+.app__jokes-container > button, .app__jokes-container_ratings-vote button{
     padding: 1rem 3rem;
     width: 150px;
     border-radius: 10px;
@@ -77,9 +79,7 @@ body{
 
 }
 .app__jokes-container button{
-    color: #fff;
     cursor: pointer;
-
 }
 
 .app__jokes-container_ratings{
@@ -97,7 +97,7 @@ body{
     background: url('assets/blob22.svg');
     background-repeat: no-repeat;
     font-size: 20px;
-    color: #ff0930;
+    color: #e83452;
     text-align: center;
     border-radius:50%;
     padding: 10px 20px;
@@ -108,9 +108,4 @@ body{
 .app__jokes-container_ratings-vote{
     gap: 10px;
     align-items: center;
-}
-.app__jokes-container_ratings-vote button {
-    border-radius: 10px;
-    padding: 10px 20px;
-
 }

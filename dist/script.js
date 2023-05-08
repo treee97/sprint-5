@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.displayJokes = exports.displayWeather = exports.getJokes = exports.getWeather = void 0;
+exports.displayJokes = exports.getJokes = exports.displayWeather = exports.getWeather = void 0;
 ;
 // WEATHER API
 function getWeather() {
@@ -25,14 +25,33 @@ function getWeather() {
         try {
             const response = yield fetch(URL, options);
             const result = yield response.json();
-            console.log(result);
+            // console.log(result.data[0].weather.icon);
+            // console.log(result.data[0].app_temp);
+            const data = {
+                icon: result.data[0].weather.icon,
+                temperature: result.data[0].app_temp
+            };
+            return data;
         }
         catch (error) {
-            console.error(error);
+            console.log(error);
+            return { icon: '', temperature: 0 };
         }
     });
 }
 exports.getWeather = getWeather;
+function displayWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const weatherText = document.getElementById('weatherText');
+        const weatherData = yield getWeather();
+        const weatherIcon = `https://cdn.weatherbit.io/static/img/icons/${weatherData.icon}.png`;
+        weatherText.innerHTML = `<img src="${weatherIcon}" /> | ${weatherData.temperature} ºC`;
+    });
+}
+exports.displayWeather = displayWeather;
+window.onload = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield displayWeather();
+});
 //union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
 function getJokes(type) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -58,17 +77,6 @@ function getJokes(type) {
     });
 }
 exports.getJokes = getJokes;
-function displayWeather() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const weatherText = document.getElementById('weatherText');
-        const weatherData = yield getWeather();
-        weatherText.innerText = `edea`;
-        // data[0].weather.icon => icono del tiempo
-        // data[0].app_temp=> 19.4
-        // data[0].weather.description => "clear sky"
-    });
-}
-exports.displayWeather = displayWeather;
 function displayJokes() {
     return __awaiter(this, void 0, void 0, function* () {
         const reportJokes = [];

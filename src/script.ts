@@ -21,9 +21,8 @@ interface weatherData {
   icon: string;
   temperature: number;
 }
-
 // WEATHER API
-export async function getWeather(): Promise<void>{
+export async function getWeather(): Promise<weatherData>{
   const URL = 'https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=2.1686&lat=41.3874&units=metric';
   const options = {
     method: 'GET',
@@ -36,13 +35,32 @@ export async function getWeather(): Promise<void>{
   try {
     const response = await fetch(URL, options);
     const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error(error);
+    // console.log(result.data[0].weather.icon);
+    // console.log(result.data[0].app_temp);
+    const data: weatherData = {
+      icon: result.data[0].weather.icon,
+      temperature: result.data[0].app_temp
+    };
+    return data
+    
+  } catch (error){
+    console.log(error);
+    return { icon: '', temperature: 0 };
   }
 }
 
+export async function displayWeather(): Promise<void>{
+  const weatherText = document.getElementById('weatherText') as HTMLElement;
 
+    const weatherData = await getWeather()
+    const weatherIcon = `https://cdn.weatherbit.io/static/img/icons/${weatherData.icon}.png`;
+    weatherText.innerHTML = `<img src="${weatherIcon}" /> | ${weatherData.temperature} ºC`;
+
+}
+
+window.onload =  async () => {
+  await displayWeather();
+};
 
 type jokeType = 'dadJoke' | 'norrisJoke';
 //union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
@@ -71,16 +89,6 @@ export async function getJokes(type: jokeType): Promise<string> {
     // console.log(joke);
     
     return joke;
-}
-
-export async function displayWeather(): Promise<void>{
-  const weatherText = document.getElementById('weatherText') as HTMLElement;
-  const weatherData = await getWeather()
-    weatherText.innerText = `edea`;
-  // data[0].weather.icon => icono del tiempo
-  // data[0].app_temp=> 19.4
-
-  // data[0].weather.description => "clear sky"
 }
 
 export async function displayJokes(): Promise<void> {
