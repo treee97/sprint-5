@@ -16,8 +16,32 @@ joke: string;
 score: number;
 date: string;
 }
-// https://www.sohamkamani.com/typescript/rest-http-api-call/?utm_content=cmp-true
-// API USE
+
+interface weatherData {
+  icon: string;
+  temperature: number;
+}
+
+// WEATHER API
+export async function getWeather(): Promise<void>{
+  const URL = 'https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=2.1686&lat=41.3874&units=metric';
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': 'b428837115msh4714b8f96679ccep12df03jsnadb3a6497ec6',
+      'X-RapidAPI-Host': 'weatherbit-v1-mashape.p.rapidapi.com'
+    }
+  };
+  
+  try {
+    const response = await fetch(URL, options);
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 
 type jokeType = 'dadJoke' | 'norrisJoke';
@@ -44,11 +68,20 @@ export async function getJokes(type: jokeType): Promise<string> {
       const norrisJokeData = data as norrisData;
       joke = norrisJokeData.value;
     }
-    console.log(joke);
+    // console.log(joke);
     
     return joke;
 }
 
+export async function displayWeather(): Promise<void>{
+  const weatherText = document.getElementById('weatherText') as HTMLElement;
+  const weatherData = await getWeather()
+    weatherText.innerText = `edea`;
+  // data[0].weather.icon => icono del tiempo
+  // data[0].app_temp=> 19.4
+
+  // data[0].weather.description => "clear sky"
+}
 
 export async function displayJokes(): Promise<void> {
 
@@ -79,6 +112,7 @@ export async function displayJokes(): Promise<void> {
       btnContainer.style.display = 'flex';
     });
   
+
     let scoreSelected = false;
 
     ratingBtn.forEach(btns => {
@@ -103,12 +137,13 @@ export async function displayJokes(): Promise<void> {
                 date: date.toISOString()
               }  
               reportJokes.push(jokeObj);
-              console.log(reportJokes);
-
             }
             scoreSelected = true;
+            console.log(reportJokes);
         });
+
     });
+
 
     nextBtn.addEventListener('click', () => {
       if (!scoreSelected) {

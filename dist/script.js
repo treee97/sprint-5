@@ -9,8 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.displayJokes = exports.getJokes = void 0;
+exports.displayJokes = exports.displayWeather = exports.getJokes = exports.getWeather = void 0;
 ;
+// WEATHER API
+function getWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const URL = 'https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=2.1686&lat=41.3874&units=metric';
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'b428837115msh4714b8f96679ccep12df03jsnadb3a6497ec6',
+                'X-RapidAPI-Host': 'weatherbit-v1-mashape.p.rapidapi.com'
+            }
+        };
+        try {
+            const response = yield fetch(URL, options);
+            const result = yield response.json();
+            console.log(result);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    });
+}
+exports.getWeather = getWeather;
 //union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
 function getJokes(type) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -31,11 +53,22 @@ function getJokes(type) {
             const norrisJokeData = data;
             joke = norrisJokeData.value;
         }
-        console.log(joke);
+        // console.log(joke);
         return joke;
     });
 }
 exports.getJokes = getJokes;
+function displayWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const weatherText = document.getElementById('weatherText');
+        const weatherData = yield getWeather();
+        weatherText.innerText = `edea`;
+        // data[0].weather.icon => icono del tiempo
+        // data[0].app_temp=> 19.4
+        // data[0].weather.description => "clear sky"
+    });
+}
+exports.displayWeather = displayWeather;
 function displayJokes() {
     return __awaiter(this, void 0, void 0, function* () {
         const reportJokes = [];
@@ -77,9 +110,9 @@ function displayJokes() {
                         date: date.toISOString()
                     };
                     reportJokes.push(jokeObj);
-                    console.log(reportJokes);
                 }
                 scoreSelected = true;
+                console.log(reportJokes);
             }));
         });
         nextBtn.addEventListener('click', () => {
