@@ -7,34 +7,33 @@
     <title>Jokes</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body onload="displayWeather();">
     <div class="app__weather">
         <div class="app__weather-container">
-            <p>Bon dia</p>
+            <p id="weatherText"></p>
         </div>
     </div>
     <div class="app__jokes">
         <div class="app__jokes-container">
             <h1>Preparat per riure??🤣🤣</h1>
-            <!--  window key + . -->
             <p id="jokeText"></p>
-
             <div class="app__jokes-container_ratings" id="rating">
+                
                 <div class="app__jokes-container_ratings-buttons">
-                    <button type="button" onclick="getRatings(1)">1</button>
-                    <button type="button" onclick="getRatings(2)">2</button>
-                    <button type="button" onclick="getRatings(3)">3</button>
+                    <button type="button">1</button>
+                    <button type="button">2</button>
+                    <button type="button">3</button>
                 </div>
                 <div class="app__jokes-container_ratings-vote" style="display: none">
                     <p>Thanks for voting</p>
-                    <button type="button">Vote Again</button>
+                    <button type="button" id="voteBtn">Vote Again</button>
                 </div>
-                <!-- div para guardar los botones. Cuando se clica uno de ellos display:none y se enseña otro div con una p y un button. "gracias for voting" btn: vote again. Al presionar vote again este div se esconde y se vuelven a enseñar los botones -->
             </div>
-            <button type="button" id="btn" onclick="displayJokes();">Next</button>
+            <button type="button" id="nextBtn" onclick="displayJokes()">Next</button>
         </div>
     </div>
 
+    <!-- <script src="testing.js"></script> -->
     <script src="../dist/script.js"></script>
 </body>
 </html>

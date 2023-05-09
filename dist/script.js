@@ -9,60 +9,137 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRatings = exports.displayJokes = exports.getJokes = void 0;
-//use the interface?
-function getJokes() {
+exports.displayJokes = exports.getJokes = exports.displayWeather = exports.getWeather = void 0;
+;
+// WEATHER API
+function getWeather() {
     return __awaiter(this, void 0, void 0, function* () {
-        return fetch('https://icanhazdadjoke.com/', {
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'b428837115msh4714b8f96679ccep12df03jsnadb3a6497ec6',
+                'X-RapidAPI-Host': 'weatherbit-v1-mashape.p.rapidapi.com'
+            }
+        };
+        try {
+            const position = yield new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const URL = `https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=${longitude}&lat=${latitude}&units=metric`;
+            const response = yield fetch(URL, options);
+            const result = yield response.json();
+            const data = {
+                icon: result.data[0].weather.icon,
+                temperature: result.data[0].app_temp
+            };
+            return data;
+        }
+        catch (error) {
+            console.log(error);
+            return { icon: '', temperature: 0 };
+        }
+    });
+}
+exports.getWeather = getWeather;
+function displayWeather() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const weatherText = document.getElementById('weatherText');
+        try {
+            const weatherData = yield getWeather();
+            const weatherIcon = `https://cdn.weatherbit.io/static/img/icons/${weatherData.icon}.png`;
+            weatherText.innerHTML = `<img src="${weatherIcon}" /> | ${weatherData.temperature} ºC`;
+        }
+        catch (error) {
+            console.log(error);
+            weatherText.innerHTML = "Unable to obtain weather data.";
+        }
+    });
+}
+exports.displayWeather = displayWeather;
+//union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
+function getJokes(type) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const url = type === 'dadJoke' ? 'https://icanhazdadjoke.com/' : 'https://api.chucknorris.io/jokes/random';
+        const res = yield fetch(url, {
             headers: {
                 'Accept': 'application/json',
             }
-        })
-            .then(response => response.json())
-            .then(data => {
-            console.log("data.joke", data.joke);
-            return data.joke;
         });
+        const data = yield res.json();
+        let joke;
+        // declaramos joke y le decimos que sea de tipo string de manera ⁡⁣⁣⁢𝗘𝗫𝗣𝗟𝗜𝗖𝗜𝗧𝗔
+        if (type === 'dadJoke') {
+            const dadJokeData = data;
+            joke = dadJokeData.joke;
+        }
+        else {
+            const norrisJokeData = data;
+            joke = norrisJokeData.value;
+        }
+        // console.log(joke);
+        return joke;
     });
 }
 exports.getJokes = getJokes;
 function displayJokes() {
     return __awaiter(this, void 0, void 0, function* () {
+        const reportJokes = [];
         const jokeText = document.getElementById('jokeText');
         const rating = document.getElementById("rating");
         rating.style.display = 'flex';
-        const joke = yield getJokes();
-        jokeText.innerText = `"${joke}"`;
+        const getRandomType = Math.random() < 0.5 ? 'dadJoke' : 'norrisJoke';
+        const jokeData = yield getJokes(getRandomType);
+        jokeText.innerText = jokeData;
+        const ratingBtn = document.querySelectorAll(".app__jokes-container_ratings-buttons button");
+        const voteBtn = document.getElementById("voteBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
+        const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
+        voteBtn.addEventListener('click', () => {
+            voteContainer.style.display = 'none';
+            btnContainer.style.display = 'flex';
+        });
+        nextBtn.addEventListener('click', () => {
+            voteContainer.style.display = 'none';
+            btnContainer.style.display = 'flex';
+        });
+        let scoreSelected = false;
+        ratingBtn.forEach(btns => {
+            btns.addEventListener('click', (btn) => __awaiter(this, void 0, void 0, function* () {
+                voteContainer.style.display = 'flex';
+                btnContainer.style.display = 'none';
+                const target = btn.target;
+                const date = new Date();
+                const score = parseInt(target.innerHTML);
+                const itemExists = reportJokes.find(item => item.joke === jokeText.innerHTML);
+                if (itemExists) {
+                    itemExists.score = score;
+                }
+                else {
+                    const jokeObj = {
+                        joke: jokeText.innerHTML,
+                        score: score,
+                        date: date.toISOString()
+                    };
+                    reportJokes.push(jokeObj);
+                }
+                scoreSelected = true;
+                console.log(reportJokes);
+            }));
+        });
+        nextBtn.addEventListener('click', () => {
+            if (!scoreSelected) {
+                const jokeObj = {
+                    joke: jokeText.innerHTML,
+                    score: 0,
+                    date: new Date().toISOString()
+                };
+                reportJokes.push(jokeObj);
+            }
+            scoreSelected = false;
+        });
     });
 }
 exports.displayJokes = displayJokes;
-const reportJokes = [];
-function getRatings(score) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const joke = yield getJokes();
-        const date = new Date();
-        reportJokes.push({ joke: joke, score: score, date: date.toISOString() });
-        const voteContainer = document.querySelector('.app__jokes-container_ratings-vote');
-        const btnContainer = document.querySelector('.app__jokes-container_ratings-buttons');
-        btnContainer.style.display = 'none';
-        voteContainer.style.display = 'flex';
-        const voteAgainBtn = voteContainer.querySelector('button');
-        voteAgainBtn.onclick = function () {
-            voteContainer.style.display = 'none';
-            btnContainer.style.display = 'flex';
-        };
-    });
-}
-exports.getRatings = getRatings;
-// generar array reportJokes
-// {
-//   joke: ...displayJokes,
-//   score: 1,
-//   date: ... (date toISOString());
-// }
-// -campos del 1 al 3 para puntuarlo 1<3
-// - botones no se muestran inicialmente.
-// - votacion opcional. Se puede pasar al siguiente chiste sin votar.
-// - una vez se vota, el usuario tiene la opcion de cambiar la votacion antes de pasar al siguiente joke.
-// - añadir toda la data al nuevo Array. 
-// - Enseñar el array por consola.

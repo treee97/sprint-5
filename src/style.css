@@ -8,7 +8,7 @@
     --poppins: 'Poppins', sans-serif; 
 }
 body{
-    background: #e9f7f7;
+    background: #e5a6ec;
 }
 /* ============= WEATHER ========================= */
 
@@ -22,15 +22,25 @@ body{
     padding: 2rem;
 }
 .app__weather-container p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--poppins);
+    font-size: 2rem;
     font-weight: 500;
-
+}
+.app__weather-container img{
+    height: 100px;
 }
 /* =============== JOKE ======================= */
 .app__jokes{
     display: flex;
     align-items: center;
     justify-content: center;
+    background: url('assets/blob.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 
     height: 80vh;
     
@@ -44,35 +54,42 @@ body{
     min-height: 50vh;
     padding: 0 2rem;
 
-    border-radius: 1rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.50);
+    /* border-radius: 1rem; */
+    /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.50); */
     /* border: 1px solid red;     */
 }
+.app__jokes-container h1{
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    color: #ffcce1;
+}
+
 .app__jokes-container h1, .app__jokes-container p, .app__jokes-container button{
     font-family: var(--poppins);
+    font-weight: 500;
+
     text-align: center;
+    color: #ffcce1;
 }
-.app__jokes-container > button{
-    padding: 1rem 2rem;
+.app__jokes-container > button, .app__jokes-container_ratings-vote button{
+    padding: 1rem 3rem;
     width: 150px;
     border-radius: 10px;
+    border: 2px solid black;
+    background: transparent;
+    font-weight: 500;
+
+    box-shadow: 5px 5px 0px #ffcce1;
+
+
 
 }
 .app__jokes-container button{
-    border: none;
-    color: #fff;
-    background-color: #95fde8;
-    font-size: 1rem;
-    font-weight: 500;
     cursor: pointer;
-}
-.app__jokes-container button:hover{
-    background-color: #82ddcb;
 }
 
 .app__jokes-container_ratings{
     display: none;
-    /* display: flex; */
     align-items: center;
    
 }
@@ -83,16 +100,18 @@ body{
     gap: 10px;
 }
 .app__jokes-container_ratings-buttons button{
+    background: url('assets/blob22.svg');
+    background-repeat: no-repeat;
+    font-size: 20px;
+    color: #e83452;
+    text-align: center;
     border-radius:50%;
     padding: 10px 20px;
+    border: none;
+
     
 }
 .app__jokes-container_ratings-vote{
     gap: 10px;
     align-items: center;
-}
-.app__jokes-container_ratings-vote button {
-    border-radius: 10px;
-    padding: 10px 20px;
-
 }
