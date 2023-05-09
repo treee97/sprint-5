@@ -22,9 +22,15 @@ body{
     padding: 2rem;
 }
 .app__weather-container p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--poppins);
+    font-size: 2rem;
     font-weight: 500;
-
+}
+.app__weather-container img{
+    height: 100px;
 }
 /* =============== JOKE ======================= */
 .app__jokes{

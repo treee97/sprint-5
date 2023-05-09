@@ -22,8 +22,8 @@ interface weatherData {
   temperature: number;
 }
 // WEATHER API
+
 export async function getWeather(): Promise<weatherData>{
-  const URL = 'https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=2.1686&lat=41.3874&units=metric';
   const options = {
     method: 'GET',
     headers: {
@@ -33,10 +33,17 @@ export async function getWeather(): Promise<weatherData>{
   };
   
   try {
+    
+    const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve,reject)
+    });
+
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    const URL = `https://weatherbit-v1-mashape.p.rapidapi.com/current?lon=${longitude}&lat=${latitude}&units=metric`;
     const response = await fetch(URL, options);
     const result = await response.json();
-    // console.log(result.data[0].weather.icon);
-    // console.log(result.data[0].app_temp);
     const data: weatherData = {
       icon: result.data[0].weather.icon,
       temperature: result.data[0].app_temp
@@ -50,17 +57,27 @@ export async function getWeather(): Promise<weatherData>{
 }
 
 export async function displayWeather(): Promise<void>{
-  const weatherText = document.getElementById('weatherText') as HTMLElement;
-
-    const weatherData = await getWeather()
-    const weatherIcon = `https://cdn.weatherbit.io/static/img/icons/${weatherData.icon}.png`;
-    weatherText.innerHTML = `<img src="${weatherIcon}" /> | ${weatherData.temperature} ºC`;
-
+    const weatherText = document.getElementById('weatherText') as HTMLElement;
+    try{
+      const weatherData = await getWeather()
+      const weatherIcon = `https://cdn.weatherbit.io/static/img/icons/${weatherData.icon}.png`;
+      weatherText.innerHTML = `<img src="${weatherIcon}" /> | ${weatherData.temperature} ºC`; 
+    } catch (error) {
+      console.log(error);
+      weatherText.innerHTML = "Unable to obtain weather data."  
+    }
 }
+// document.addEventListener('DOMContentLoaded', async () => {
+//    await displayWeather();
+// })
+// window.addEventListener('load', async () => {
+//    await displayWeather();
+// });
 
-window.onload =  async () => {
-  await displayWeather();
-};
+// displayWeather();
+// window.onload = () => {
+//   console.log("hiii"); 
+// };
 
 type jokeType = 'dadJoke' | 'norrisJoke';
 //union. jokeType es ⁡⁣⁣⁢𝗜𝗠𝗣𝗟𝗜𝗖𝗜𝗧𝗢⁡ que sea de type string
